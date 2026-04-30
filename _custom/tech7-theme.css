@@ -1,0 +1,246 @@
+/* ==========================================================================
+   TECH 7 — Visual Identity (Light Theme)
+   Alinhado ao design system Stitch (Kinetic Tech) em modo LIGHT
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Space+Grotesk:wght@600&display=swap');
+
+:root {
+  /* Light theme tokens — Kinetic Tech adapted for WHITE background */
+  --tech-bg: #ffffff;
+  --tech-surface: #ffffff;
+  --tech-surface-alt: #f8f9fa;
+  --tech-border: #e5e7eb;
+  --tech-text: #111111;
+  --tech-text-muted: #4b5563;
+  --tech-accent: #ff6a00;
+  --tech-accent-hover: #e85f00;
+  --tech-accent-soft: #ffedd5;
+  --tech-input-bg: #ffffff;
+  --tech-footer-bg: #0b0b0b;
+  --tech-footer-text: #f7f7f7;
+
+  /* Spacing & radius from Stitch tokens */
+  --stitch-radius: 8px;
+  --stitch-container-max: 1280px;
+  --stitch-section-gap: 80px;
+}
+
+html, body {
+  background: var(--tech-bg) !important;
+  color: var(--tech-text) !important;
+  font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif !important;
+  margin: 0;
+  padding: 0;
+}
+
+.application {
+  max-width: var(--stitch-container-max);
+  margin: 40px auto;
+  border: 1px solid var(--tech-border);
+  border-radius: var(--stitch-radius);
+  overflow: hidden;
+  background: var(--tech-surface) !important;
+  box-shadow: 0 10px 40px rgba(17, 17, 17, 0.08);
+}
+
+/* Header & Navigation — white theme */
+.wrapper.menu-icons.position-header,
+.wrapper.menu-icons.position-header .bar-top,
+.wrapper.menu-icons.position-header .container,
+.header,
+.header .bg,
+.header .line,
+.header .line.container,
+.nav,
+.nav .container,
+.nav .list,
+.bar-top {
+  background: var(--tech-surface) !important;
+  border-color: var(--tech-border) !important;
+}
+
+/* Text colors on light background */
+.wrapper.menu-icons.position-header .item,
+.wrapper.menu-icons.position-header .text,
+.bar-top,
+.bar-top a,
+.header .account span,
+.header .title-store,
+.header .contact .title,
+.header .rastreio .title,
+.header .rastreio .content,
+.header .contact .content,
+.name,
+.nav .name,
+.nav-mobile a,
+.nav-mobile span {
+  color: var(--tech-text) !important;
+}
+
+/* Logo container — light pill with subtle border */
+.header .logo {
+  background: #f8f9fa;
+  border: 1px solid var(--tech-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+.header .logo img {
+  max-height: 48px !important;
+}
+
+/* Form inputs — light theme with orange focus */
+.header .search-header,
+.search-header .input-search,
+.rastreio input,
+.modal-theme input,
+.footer .newsletter input {
+  background: var(--tech-input-bg) !important;
+  border: 1px solid var(--tech-border) !important;
+  color: var(--tech-text) !important;
+  border-radius: var(--stitch-radius);
+}
+.search-header .input-search:focus,
+.header .search-header:focus-within,
+.rastreio input:focus,
+.footer .newsletter input:focus {
+  border-color: var(--tech-accent) !important;
+  box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15) !important;
+}
+
+/* Content sections — light surfaces */
+.section-showcase,
+.showcase,
+.list-product,
+.line-info,
+.brands,
+.dep-content,
+.container-info {
+  background: var(--tech-surface) !important;
+}
+
+/* Product cards — white with subtle shadow and orange accent on hover */
+.product,
+.box-product,
+.product-grid .product,
+.catalog-product {
+  background: var(--tech-surface) !important;
+  border: 1px solid var(--tech-border) !important;
+  border-radius: var(--stitch-radius) !important;
+  box-shadow: 0 4px 20px rgba(17, 17, 17, 0.06) !important;
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease !important;
+}
+.product:hover,
+.box-product:hover {
+  transform: translateY(-2px);
+  border-color: var(--tech-accent) !important;
+  box-shadow: 0 12px 32px rgba(255, 106, 0, 0.12) !important;
+}
+
+/* Typography — dark text on light */
+.product-name,
+.product .name,
+.title-page,
+.title-section span,
+h1, h2, h3, h4, h5, h6,
+.breadcrumb,
+.breadcrumb a,
+.category-description,
+.footer .title,
+.footer .text,
+.footer a,
+.copy .text {
+  color: var(--tech-text) !important;
+}
+
+/* Price & badges — white on orange (high contrast) */
+.product .price,
+.product-price .price-off,
+.preco_color,
+.footer .first,
+.title-section span::after,
+.list-tags .item,
+.seal.featured,
+.seal.new,
+.tag,
+.product .seals > div {
+  color: #ffffff !important;
+  background: var(--tech-accent) !important;
+}
+
+/* Buttons — solid orange with subtle highlight */
+button,
+.action,
+.botao-commerce,
+.news-button,
+.button-search,
+.button,
+.btn,
+input[type='submit'] {
+  background: var(--tech-accent) !important;
+  border-color: var(--tech-accent) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 16px rgba(255, 106, 0, 0.25) !important;
+  border-radius: var(--stitch-radius);
+  font-weight: 600;
+}
+button:hover,
+.action:hover,
+.botao-commerce:hover,
+.news-button:hover,
+.button:hover,
+.btn:hover,
+input[type='submit']:hover {
+  background: var(--tech-accent-hover) !important;
+  border-color: var(--tech-accent-hover) !important;
+}
+
+/* Footer — dark band for contrast */
+.footer,
+.copy {
+  background: var(--tech-footer-bg) !important;
+  border-top: 1px solid #1f1f1f;
+}
+.footer .box,
+.footer .box--social,
+.footer .newsletter {
+  background: #1a1c1c !important;
+  border: 1px solid #333535 !important;
+  border-radius: var(--stitch-radius) !important;
+}
+
+/* Utility overrides — force light where needed */
+.line-info,
+.container-info .open_desk,
+.line-info .line,
+.section-showcase,
+.product-grid,
+.main-showcase,
+.list-product,
+.brands,
+.brands .swiper-container,
+.application,
+.application > div,
+.content-home > .container,
+.section-showcase > .showcase,
+.dep-content,
+.brands .swiper-slide,
+.line-info .item {
+  background-color: var(--tech-surface) !important;
+  color: var(--tech-text) !important;
+}
+
+/* Force white background globally, override any dark remnants */
+body,
+.site-main,
+.page-content,
+.content-home,
+.container-info,
+.section-showcase,
+.section-banners,
+.brands,
+.bg-cat,
+.application,
+.application > div {
+  background: #ffffff !important;
+}
