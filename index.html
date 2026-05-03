@@ -259,228 +259,355 @@ a[href*="app-central"] {
 </style>
 <!-- T7-CARD-STYLES --><style>
 /* ========================================================
-   TECH 7 — Dark Product Cards (somente cards de produto)
+   TECH 7 - Swiper 3D Premium Carousel
    ======================================================== */
 .t7-product-carousel-section {
+  --t7-bg: #060606;
+  --t7-card-bg: #1a1a1a;
+  --t7-card-border: rgba(255, 255, 255, .1);
+  --t7-orange: #FF6A00;
+  --t7-text: #ffffff;
+  --t7-muted: rgba(255, 255, 255, .68);
   position: relative;
-  background: #000000 !important;
-  padding: 72px 0 52px;
+  background: radial-gradient(circle at 50% 12%, rgba(255, 106, 0, .2), transparent 34%), linear-gradient(180deg, #090909 0%, var(--t7-bg) 58%, #0f0f0f 100%) !important;
+  padding: 52px 0 36px;
   overflow: hidden;
+  isolation: isolate;
+}
+.t7-product-carousel-section::before,
+.t7-product-carousel-section::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
 }
 .t7-product-carousel-section::before {
+  inset: 0;
+  background: linear-gradient(115deg, transparent 0 38%, rgba(255, 106, 0, .08) 48%, transparent 58% 100%), radial-gradient(circle at 18% 70%, rgba(255, 106, 0, .14), transparent 34%);
+  opacity: .85;
+}
+.t7-product-carousel-section::after {
+  left: 50%;
+  bottom: 14px;
+  width: min(760px, 86vw);
+  height: 96px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(255, 106, 0, .18), transparent 68%);
+  filter: blur(8px);
+}
+.t7-carousel-header,
+.t7-carousel-wrap {
+  position: relative;
+  z-index: 2;
+}
+.t7-carousel-header { text-align: center; }
+.t7-carousel-heading {
+  color: var(--t7-text) !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -.035em;
+  margin: 0;
+}
+.t7-carousel-heading span {
+  color: var(--t7-orange);
+  text-shadow: 0 0 26px rgba(255, 106, 0, .42);
+}
+.t7-carousel-desc {
+  color: var(--t7-muted) !important;
+  max-width: 720px;
+  margin: 8px auto 0;
+  font-family: 'Inter', sans-serif !important;
+}
+.t7-carousel-wrap {
+  margin-top: 18px;
+  overflow: visible;
+}
+.t7-product-swiper {
+  width: 100%;
+  min-height: 380px;
+  padding: 14px 42px 34px;
+  overflow: visible !important;
+  perspective: 1400px;
+  transform: translate3d(0,0,0);
+}
+.t7-product-swiper .swiper-wrapper {
+  align-items: stretch;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.t7-product-swiper .swiper-slide {
+  height: auto;
+  display: flex;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: opacity .42s ease, filter .42s ease;
+  will-change: transform, opacity, filter;
+}
+.t7-product-swiper .swiper-slide:not(.swiper-slide-active) {
+  opacity: .58;
+  filter: saturate(.76) brightness(.8);
+}
+.t7-product-swiper .swiper-slide-prev,
+.t7-product-swiper .swiper-slide-next {
+  opacity: .82;
+  filter: saturate(.92) brightness(.9);
+}
+.t7-carousel-link {
+  display: flex;
+  width: 100%;
+  color: inherit;
+  text-decoration: none !important;
+  transform-style: preserve-3d;
+  outline-offset: 6px;
+}
+.t7-carousel-card {
+  --t7-rotate-x: 0deg;
+  --t7-rotate-y: 0deg;
+  --t7-shadow-x: 0px;
+  --t7-shadow-y: 28px;
+  --t7-glow: .18;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 340px;
+  border-radius: 14px;
+  border: 1px solid var(--t7-card-border);
+  background: linear-gradient(145deg, rgba(255,255,255,.055), transparent 34%), var(--t7-card-bg);
+  overflow: hidden;
+  transform: translate3d(0,0,0) rotateX(var(--t7-rotate-x)) rotateY(var(--t7-rotate-y));
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  box-shadow: var(--t7-shadow-x) var(--t7-shadow-y) 52px rgba(0, 0, 0, .56), 0 0 calc(32px + (var(--t7-glow) * 38px)) rgba(255, 106, 0, var(--t7-glow));
+  transition: transform .42s cubic-bezier(.2,.74,.22,1), border-color .32s ease, box-shadow .42s ease, filter .32s ease;
+  will-change: transform, box-shadow;
+}
+.t7-carousel-card::before,
+.t7-carousel-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(242, 125, 38, .22) 0%, rgba(0, 0, 0, 0) 62%);
   pointer-events: none;
+  border-radius: inherit;
 }
-.t7-carousel-header {
+.t7-carousel-card::before {
+  background: radial-gradient(circle at var(--t7-pointer-x, 50%) var(--t7-pointer-y, 20%), rgba(255, 106, 0, .38), transparent 26%), linear-gradient(120deg, transparent 22%, rgba(255,255,255,.18) 48%, transparent 72%);
+  mix-blend-mode: screen;
+  opacity: calc(.18 + (var(--t7-glow) * .78));
+  transform: translateZ(38px);
+  transition: opacity .32s ease;
+}
+.t7-carousel-card::after {
+  border: 1px solid rgba(255, 106, 0, calc(.14 + (var(--t7-glow) * .45)));
+  box-shadow: inset 0 0 28px rgba(255, 106, 0, calc(.08 + (var(--t7-glow) * .18)));
+}
+.t7-product-swiper .swiper-slide-active .t7-carousel-card {
+  --t7-glow: .34;
+  border-color: rgba(255, 106, 0, .72);
+  transform: translate3d(0, -6px, 72px) rotateX(var(--t7-rotate-x)) rotateY(var(--t7-rotate-y));
+}
+.t7-product-swiper .swiper-slide-active .t7-carousel-card:hover {
+  --t7-glow: .55;
+  border-color: rgba(255, 106, 0, .95);
+}
+.t7-carousel-img-wrap {
   position: relative;
-  z-index: 3;
-}
-.t7-carousel-heading {
-  color: #ffffff !important;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(28px, 3.1vw, 42px);
-  letter-spacing: -.03em;
-}
-.t7-carousel-heading span {
-  color: #f27d26;
-}
-.t7-carousel-desc {
-  color: rgba(255, 255, 255, .64) !important;
-  max-width: 700px;
-}
-.t7-carousel-wrap {
-  position: relative;
-  z-index: 3;
-  margin-top: 28px;
-}
-.t7-tech-carousel-shell {
-  position: relative;
-  width: 100%;
-}
-.t7-tech-carousel-viewport {
-  position: relative;
-  height: 440px;
-  perspective: 1400px;
-}
-.t7-tech-carousel-track {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.t7-tech-card {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: min(320px, 74vw);
-  height: 392px;
-  transform-style: preserve-3d;
-  transition: transform .55s cubic-bezier(.2,.7,.2,1), opacity .45s ease, filter .45s ease;
-  pointer-events: none;
-}
-.t7-tech-card-inner {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, .12);
-  background: rgba(18, 18, 18, .9);
-  overflow: hidden;
-  box-shadow: 0 24px 56px rgba(0, 0, 0, .45);
-}
-.t7-tech-card.t7-active {
-  pointer-events: auto;
-}
-.t7-tech-card.t7-active .t7-tech-card-inner {
-  border-color: rgba(242, 125, 38, .85);
-  box-shadow: 0 0 56px rgba(242, 125, 38, .22);
-}
-.t7-tech-card-media {
-  height: 228px;
+  height: 198px;
   padding: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
+  transform: translateZ(46px);
+  transform-style: preserve-3d;
 }
-.t7-tech-card-media img {
+.t7-carousel-img-wrap::before {
+  content: "";
+  position: absolute;
+  width: 76%;
+  height: 76%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 106, 0, .24), transparent 68%);
+  filter: blur(14px);
+  transform: translateZ(-34px);
+}
+.t7-carousel-img-wrap::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 10px;
+  height: 26px;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.78), transparent 70%);
+  filter: blur(8px);
+  transform: translateZ(-46px) rotateX(68deg);
+  opacity: .72;
+}
+.t7-carousel-img {
+  position: relative;
+  z-index: 2;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 20px 34px rgba(0, 0, 0, .5));
+  display: block;
+  transform: translate3d(0,0,74px) scale(1.02);
+  filter: drop-shadow(0 24px 34px rgba(0,0,0,.58));
+  transition: transform .46s cubic-bezier(.2,.74,.22,1), filter .36s ease;
+  will-change: transform;
 }
-.t7-tech-card-body {
-  display: flex;
-  flex-direction: column;
+.t7-product-swiper .swiper-slide-active .t7-carousel-img { animation: t7DisplayFloat 4.8s ease-in-out infinite; }
+.t7-carousel-info {
+  position: relative;
+  z-index: 2;
   flex: 1;
-  padding: 10px 18px 16px;
+  padding: 14px 16px 18px;
+  color: var(--t7-text);
+  transform: translateZ(34px);
 }
-.t7-tech-brand {
-  color: rgba(255, 255, 255, .7);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-}
-.t7-tech-title {
-  color: #ffffff;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 21px;
-  line-height: 1.12;
-  margin-top: 6px;
-}
-.t7-tech-subtitle {
-  color: rgba(255, 255, 255, .58);
-  margin-top: 6px;
-  font-size: 13px;
-}
-.t7-tech-bottom {
-  margin-top: auto;
-  padding-top: 14px;
-  display: flex;
+.t7-carousel-badge {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.t7-tech-price {
-  color: #f27d26;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -.01em;
-}
-.t7-tech-cta {
-  border: 0;
-  background: #f27d26;
-  color: #ffffff;
-  border-radius: 10px;
-  padding: 10px 14px;
+  min-height: 24px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(255, 106, 0, .13);
+  border: 1px solid rgba(255, 106, 0, .34);
+  color: #ffb46e;
+  font-family: 'Inter', sans-serif !important;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-.t7-tech-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+.t7-carousel-title {
+  color: var(--t7-text);
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.12;
+  margin-top: 10px;
+  text-shadow: 0 0 18px rgba(255, 106, 0, .18);
+}
+.t7-carousel-sub {
+  color: var(--t7-muted);
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px;
+  margin-top: 7px;
+}
+.t7-carousel-price {
+  color: var(--t7-orange);
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 14px;
+}
+.t7-carousel-cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+  color: #fff;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  transition: color .25s ease, transform .25s ease, text-shadow .25s ease;
+}
+.t7-carousel-card:hover .t7-carousel-cta,
+.t7-product-swiper .swiper-slide-active .t7-carousel-cta {
+  color: var(--t7-orange);
+  text-shadow: 0 0 18px rgba(255, 106, 0, .45);
+  transform: translateX(3px);
+}
+.t7-product-swiper .swiper-button-prev,
+.t7-product-swiper .swiper-button-next {
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(255, 255, 255, .26);
+  margin-top: -22px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .08);
-  color: #ffffff;
-  font-size: 26px;
-  line-height: 1;
-  cursor: pointer;
-  z-index: 4;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(26,26,26,.72);
+  color: var(--t7-orange);
+  transform: translate3d(0,0,60px);
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease;
 }
-.t7-tech-nav:hover {
-  border-color: rgba(242, 125, 38, .75);
-  color: #f27d26;
+.t7-product-swiper .swiper-button-prev:hover,
+.t7-product-swiper .swiper-button-next:hover {
+  border-color: rgba(255, 106, 0, .78);
+  background: rgba(255, 106, 0, .14);
+  box-shadow: 0 0 30px rgba(255, 106, 0, .28);
+  transform: translate3d(0,-2px,70px);
 }
-.t7-tech-nav.prev {
-  left: max(6px, calc(50% - 430px));
+.t7-product-swiper .swiper-button-prev::after,
+.t7-product-swiper .swiper-button-next::after {
+  font-size: 18px;
+  font-weight: 900;
 }
-.t7-tech-nav.next {
-  right: max(6px, calc(50% - 430px));
-}
-.t7-tech-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 18px;
-}
-.t7-tech-dot {
+.t7-swiper-pagination { bottom: 10px !important; }
+.t7-swiper-pagination .swiper-pagination-bullet {
   width: 8px;
   height: 8px;
-  border-radius: 999px;
-  border: 0;
-  background: rgba(255, 255, 255, .25);
-  cursor: pointer;
-  transition: all .25s ease;
+  background: rgba(255,255,255,.42);
+  opacity: 1;
+  transition: width .25s ease, background .25s ease, box-shadow .25s ease;
 }
-.t7-tech-dot.active {
+.t7-swiper-pagination .swiper-pagination-bullet-active {
   width: 26px;
-  background: #f27d26;
+  border-radius: 999px;
+  background: var(--t7-orange);
+  box-shadow: 0 0 18px rgba(255,106,0,.55);
+}
+.t7-product-swiper.t7-swiper-fallback { overflow: hidden !important; padding-inline: 18px; }
+.t7-product-swiper.t7-swiper-fallback .swiper-wrapper {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 12px;
+}
+.t7-product-swiper.t7-swiper-fallback .swiper-slide {
+  flex: 0 0 min(320px, 82vw);
+  scroll-snap-align: center;
+}
+@keyframes t7DisplayFloat {
+  0% { transform: translate3d(0,0,74px) scale(1.02) rotateX(0deg); }
+  50% { transform: translate3d(0,-9px,96px) scale(1.045) rotateX(1.4deg); }
+  100% { transform: translate3d(0,0,74px) scale(1.02) rotateX(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .t7-product-swiper .swiper-slide,
+  .t7-carousel-card,
+  .t7-carousel-img,
+  .t7-carousel-cta,
+  .t7-product-swiper .swiper-button-prev,
+  .t7-product-swiper .swiper-button-next,
+  .t7-swiper-pagination .swiper-pagination-bullet {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 @media (max-width: 1024px) {
-  .t7-tech-carousel-viewport {
-    height: 410px;
-  }
-  .t7-tech-nav.prev {
-    left: 4px;
-  }
-  .t7-tech-nav.next {
-    right: 4px;
-  }
+  .t7-product-carousel-section { padding: 40px 0 30px; }
+  .t7-carousel-wrap { margin-top: 16px; }
+  .t7-product-swiper { min-height: 336px; padding-inline: 24px; padding-bottom: 30px; perspective: 1000px; }
+  .t7-carousel-card { min-height: 296px; }
+  .t7-carousel-img-wrap { height: 160px; }
 }
 @media (max-width: 767px) {
-  .t7-product-carousel-section {
-    padding: 48px 0 38px;
-  }
-  .t7-tech-carousel-viewport {
-    height: 370px;
-  }
-  .t7-tech-card {
-    width: min(290px, 82vw);
-    height: 340px;
-  }
-  .t7-tech-card-media {
-    height: 184px;
-  }
-  .t7-tech-title {
-    font-size: 17px;
-  }
-  .t7-tech-price {
-    font-size: 18px;
-  }
-  .t7-tech-cta {
-    padding: 9px 11px;
-    font-size: 10px;
-  }
+  .t7-product-carousel-section { padding: 32px 0 24px; }
+  .t7-carousel-wrap { margin-top: 12px; }
+  .t7-product-swiper { min-height: 284px; padding: 8px 10px 28px; perspective: 760px; }
+  .t7-product-swiper .swiper-slide:not(.swiper-slide-active) { opacity: .68; filter: saturate(.82) brightness(.82); }
+  .t7-carousel-card { min-height: 252px; transform: translate3d(0,0,0) !important; }
+  .t7-product-swiper .swiper-slide-active .t7-carousel-card { transform: translate3d(0,-3px,28px) !important; }
+  .t7-carousel-img-wrap { height: 126px; padding: 10px; }
+  .t7-carousel-title { font-size: 17px; }
+  .t7-carousel-price { font-size: 18px; }
+  .t7-product-swiper .swiper-button-prev,
+  .t7-product-swiper .swiper-button-next { display: none; }
 }
-
 .product.nb,
 .product.nb.show-down,
 .product.variant.nb,
@@ -558,14 +685,14 @@ a[href*="app-central"] {
   margin-bottom: 20px;
 }
 .header .logo img {
-  width: 190px !important;
-  max-width: 190px !important;
+  width: 270px !important;
+  max-width: 270px !important;
   height: auto !important;
 }
 @media (max-width: 767px) {
   .header .logo img {
-    width: 150px !important;
-    max-width: 150px !important;
+    width: 205px !important;
+    max-width: 205px !important;
   }
 }
 </style><!-- /T7-CARD-STYLES -->
@@ -779,115 +906,168 @@ a[href*="app-central"] {
                                         <span><span>38<span>,<span>83</span></span></span></span></strong></span><span class="operadora"> com juros </span><span class="txt-forma-pagamento">MasterCard - Vindi</span><!-- 3|38.83|{lower_price}|79 --></div></div></div></a><div class="variants hide-on-mobile"><form class="list-variants" data-api-cart="1" data-id="5317" data-variants=""><div class="flex add-cart"><input required="" type="number" value="1"/><button class="action">Adicionar ao carrinho</button></div></form></div></div></div></div></div></li><li class="relative" data-id="11" data-level="0"><a class="icon-show sub vertical-icon" href="tampas-e-carcacas/index.html"><img alt="TAMPAS e CARCAÇAS" class="icon" src="_assets/images.tcdn.com.br/img/img_prod/996644/categoria_img_11_20220331152405.png"/><div class="name">TAMPAS e CARCAÇAS</div></a><div class="sub-line-category flex product-sub"><div class="header-sub">TAMPAS e CARCAÇAS</div><div class="over flex"><ul class="list-line-sub"><li><a class="second-nivel" href="tampas-e-carcacas/apple/index.html">APPLE</a></li><li><a class="second-nivel" href="tampas-e-carcacas/samsung/index.html">SAMSUNG</a></li><li><a class="second-nivel" href="tampas-e-carcacas/xiaomi-redmi/index.html">XIAOMI REDMI</a></li><li><a class="second-nivel" href="tampas-e-carcacas/motorola/index.html">MOTOROLA</a></li><li><a class="second-nivel" href="tampas-e-carcacas/zenfone/index.html">ZENFONE</a></li><li><a class="second-nivel" href="tampas-e-carcacas/sony-experia/index.html">SONY EXPERIA</a></li><li><a class="second-nivel" href="tampas-e-carcacas/alcatel/index.html">ALCATEL</a></li><li><a class="second-nivel" href="tampas-e-carcacas/lenovo/index.html">LENOVO</a></li><li><a class="second-nivel" href="tampas-e-carcacas/lg/index.html">LG</a></li><li><a class="second-nivel" href="tampas-e-carcacas/blu/index.html">BLU</a></li><li><a class="second-nivel" href="tampas-e-carcacas/cce/index.html">CCE</a></li><li><a class="second-nivel" href="tampas-e-carcacas/multilaser/index.html">MULTILASER</a></li><li><a class="second-nivel" href="tampas-e-carcacas/nokia/index.html">NOKIA</a></li><li><a class="second-nivel" href="tampas-e-carcacas/positivo/index.html">POSITIVO</a></li><li><a class="second-nivel" href="tampas-e-carcacas/outros/index.html">OUTROS</a></li><li><a class="second-nivel" href="tampas-e-carcacas/realme/index.html">REALME</a></li></ul><div class="col-product"><div class="product variant nb show-down"><div class="image"><a class="space-image second" href="tampas-e-carcacas/apple/tampa-traseira-iph-8g/index.html"><img alt="Tampa Traseira Iphone 8G" class="lazyload transform" data-src="_assets/images.tcdn.com.br/img/img_prod/996644/180_tampa_traseira_iphone_8g_647_1_0cbf4b6072a7e38881e4e8feea32c635.jpg"/><img alt="Tampa Traseira Iphone 8G" class="second-image transform" data-src="_assets/images.tcdn.com.br/img/img_prod/996644/180_tampa_traseira_iphone_8g_647_2_e7de2cd6723be7264452766f7326cc11.jpg"/><div class="seals"><div class="seal new">LANÇAMENTO</div></div></a></div><a class="info-product" href="tampas-e-carcacas/apple/tampa-traseira-iph-8g/index.html"><div class="product-name">Tampa Traseira Iphone 8G</div><div class="down-line"><div class="list-star flex justify-center"><div class="icon"></div><div class="icon"></div><div class="icon"></div><div class="icon"></div><div class="icon"></div></div><div class="box-price"><div class="price"><div class="product-price"><span class="price-off">
                                                     R$ 15,00
 </span></div></div><div class="product-payment"></div></div></div></a><div class="variants hide-on-mobile"><form class="list-variants" data-api-cart="1" data-id="647" data-variants='[{"price":{"price":15,"payment":""},"id":"571","stock":3,"option":"Branco"},{"price":{"price":15,"payment":""},"id":"573","stock":10,"option":"Preto"},{"price":{"price":15,"payment":""},"id":"2279","stock":3,"option":"Rose"},{"price":{"price":15,"payment":""},"id":"3299","stock":5,"option":"Vermelho"}]'><label><span>Cor</span><select class="first" required=""><option hidden="" value="">Selecione</option><option value="Branco">Branco</option><option value="Preto">Preto</option><option value="Rose">Rose</option><option value="Vermelho">Vermelho</option></select></label><div class="flex add-cart"><input required="" type="number" value="1"/><button class="action">Adicionar ao carrinho</button></div></form></div></div></div></div></div></li></ul></div></nav></header></div></div><div class="t7-product-carousel-section"><div class="t7-carousel-header container"><h2 class="t7-carousel-heading">Destaques <span>Top de Linha</span></h2><p class="t7-carousel-desc">Displays originais para iPhone e Galaxy — linha premium em estoque</p></div><div class="t7-carousel-wrap"><div class="swiper-container t7-product-swiper"><div class="swiper-wrapper"><div class="swiper-slide"><a href="display-e-lcd/apple/tela-display-lcd-iphone-16-jk-troca-ci/index.html" title="Display iPhone 16"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display iPhone 16" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_iphone_16_jk_troca_ci_9186_1_adc8f22e9709be6d6c5-1c8beb08.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-apple">Apple</span><div class="t7-carousel-title">Display iPhone 16</div><div class="t7-carousel-sub">JK Troca Ci - Original</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display-e-lcd/apple/tela-display-lcd-iphone-16-plus-jk-troca-ci/index.html" title="Display iPhone 16 Plus"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display iPhone 16 Plus" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_iphone_16_plus_jk_troca_ci_9188_1_4273e3fac8deab-8d99a78a.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-apple">Apple</span><div class="t7-carousel-title">Display iPhone 16 Plus</div><div class="t7-carousel-sub">JK Troca Ci - Original</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display-e-lcd/apple/tela-display-lcd-iphone-16-pro-max-jk-troca-ci/index.html" title="Display iPhone 16 Pro Max"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display iPhone 16 Pro Max" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_iphone_16_pro_max_jk_troca_ci_8770_1_1e9068ddecc-cd63012a.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-apple">Apple</span><div class="t7-carousel-title">Display iPhone 16 Pro Max</div><div class="t7-carousel-sub">JK Troca Ci - Original</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display/samsung/tela-display-lcd-samsung-s23-s911-oled-com-aro/index.html" title="Display Samsung S23"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display Samsung S23" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_samsung_s23_s911_oled_com_aro_6871_1_1aeb0189cf6-9b46ba01.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-samsung">Samsung</span><div class="t7-carousel-title">Display Samsung S23</div><div class="t7-carousel-sub">S911 OLED com Aro</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display/samsung/tela-display-lcd-samsung-s23-plus-s916-oled-com-aro/index.html" title="Display Samsung S23 Plus"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display Samsung S23 Plus" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_samsung_s23_plus_s916_oled_com_aro_6873_1_aeaa97-2724068d.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-samsung">Samsung</span><div class="t7-carousel-title">Display Samsung S23 Plus</div><div class="t7-carousel-sub">S916 OLED com Aro</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display/samsung/tela-display-lcd-samsung-s23-ultra-5g-s918-oled-com-aro/index.html" title="Display Samsung S23 Ultra"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display Samsung S23 Ultra" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_samsung_s23_ultra_5g_s918_oled_com_aro_6419_1_e6-28c3bf2f.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-samsung">Samsung</span><div class="t7-carousel-title">Display Samsung S23 Ultra</div><div class="t7-carousel-sub">S918 OLED com Aro</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display/samsung/tela-display-lcd-samsung-s23-fe-s23-fe-s711-oled-com-aro/index.html" title="Display Samsung S23 FE"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display Samsung S23 FE" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_samsung_s23_fe_s771_oled_com_aro_7724_1_7c50a8ff-73435f9b.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-samsung">Samsung</span><div class="t7-carousel-title">Display Samsung S23 FE</div><div class="t7-carousel-sub">S711 OLED com Aro</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display-e-lcd/samsung/tela-display-lcd-samsung-s23-5g-s911-original-retirada-sem-aro/index.html" title="Display Samsung S23 5G"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display Samsung S23 5G" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_samsung_s23_5g_s911_sem_aro_original_retirada_77-4fa741b4.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-samsung">Samsung</span><div class="t7-carousel-title">Display Samsung S23 5G</div><div class="t7-carousel-sub">S911 Original Retirada</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display-e-lcd/samsung/tela-display-lcd-samsung-s24-plus-s926-sem-aro-original-nacional/index.html" title="Display Samsung S24 Plus"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display Samsung S24 Plus" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_samsung_s24_plus_s926_sem_aro_original_retirada-b40af83d.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-samsung">Samsung</span><div class="t7-carousel-title">Display Samsung S24 Plus</div><div class="t7-carousel-sub">S926 Original Nacional</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div><div class="swiper-slide"><a href="display-e-lcd/samsung/tela-display-lcd-samsung-s24-fe-s721-sem-aro-original-nacional/index.html" title="Display Samsung S24 FE"><div class="t7-carousel-card"><div class="t7-carousel-img-wrap"><img alt="Display Samsung S24 FE" class="t7-carousel-img" src="_assets/images.tcdn.com.br/img/img_prod/996644/tela_display_lcd_samsung_s24_fe_s721_sem_aro_original_nacional_87-6a87a5b9.jpg" loading="eager"/></div><div class="t7-carousel-info"><span class="t7-carousel-badge t7-badge-samsung">Samsung</span><div class="t7-carousel-title">Display Samsung S24 FE</div><div class="t7-carousel-sub">S721 Original Nacional</div><div class="t7-carousel-price">Consulte preco</div><div class="t7-carousel-cta">Ver produto →</div></div></div></a></div></div><div class="swiper-pagination t7-swiper-pagination"></div><div class="swiper-button-prev t7-swiper-prev"></div><div class="swiper-button-next t7-swiper-next"></div></div></div></div><script>
-document.addEventListener("DOMContentLoaded", function() {
-  var section = document.querySelector(".t7-product-carousel-section");
-  var oldTrack = section ? section.querySelector(".t7-product-swiper") : null;
-  if (!section || !oldTrack) return;
-  var carouselPrices = {
-    "display-e-lcd/apple/tela-display-lcd-iphone-16-jk-troca-ci/index.html": "R$ 1.350,00",
-    "display-e-lcd/apple/tela-display-lcd-iphone-16-plus-jk-troca-ci/index.html": "R$ 475,00",
-    "display-e-lcd/apple/tela-display-lcd-iphone-16-pro-max-jk-troca-ci/index.html": "R$ 48,00",
-    "display/samsung/tela-display-lcd-samsung-s23-s911-oled-com-aro/index.html": "R$ 1.050,00",
-    "display/samsung/tela-display-lcd-samsung-s23-plus-s916-oled-com-aro/index.html": "R$ 48,00",
-    "display/samsung/tela-display-lcd-samsung-s23-ultra-5g-s918-oled-com-aro/index.html": "R$ 475,00",
-    "display/samsung/tela-display-lcd-samsung-s23-fe-s23-fe-s711-oled-com-aro/index.html": "R$ 48,00",
-    "display-e-lcd/samsung/tela-display-lcd-samsung-s23-5g-s911-original-retirada-sem-aro/index.html": "R$ 1.050,00",
-    "display-e-lcd/samsung/tela-display-lcd-samsung-s24-plus-s926-sem-aro-original-nacional/index.html": "R$ 1.050,00",
-    "display-e-lcd/samsung/tela-display-lcd-samsung-s24-fe-s721-sem-aro-original-nacional/index.html": "R$ 48,00"
-  };
-  var items = [];
-  oldTrack.querySelectorAll(".swiper-slide a[href]").forEach(function (anchor) {
-    var href = anchor.getAttribute("href");
-    var title = anchor.getAttribute("title") || "";
-    var subtitleNode = anchor.querySelector(".t7-carousel-sub");
-    var brandNode = anchor.querySelector(".t7-carousel-badge");
-    var imageNode = anchor.querySelector("img");
-    if (!href || !title || !imageNode) return;
-    items.push({
-      href: href,
-      title: title,
-      subtitle: subtitleNode ? subtitleNode.textContent.trim() : "Original",
-      brand: brandNode ? brandNode.textContent.trim() : "Premium",
-      image: imageNode.getAttribute("src") || imageNode.getAttribute("data-src") || "",
-      price: carouselPrices[href] || "Consulte preco"
-    });
+(function () {
+  function onReady(callback) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", callback);
+    } else {
+      callback();
+    }
+  }
+
+  onReady(function () {
+    var section = document.querySelector(".t7-product-carousel-section");
+    var swiperEl = section ? section.querySelector(".t7-product-swiper") : null;
+    if (!section || !swiperEl || swiperEl.getAttribute("data-t7-3d") === "ready") return;
+    swiperEl.setAttribute("data-t7-3d", "ready");
+    section.classList.add("t7-3d-ready");
+
+    var slides = Array.prototype.slice.call(swiperEl.querySelectorAll(".swiper-slide"));
+    var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var priceByHref = {
+      "display-e-lcd/apple/tela-display-lcd-iphone-16-jk-troca-ci/index.html": "R$ 1.350,00",
+      "display-e-lcd/apple/tela-display-lcd-iphone-16-plus-jk-troca-ci/index.html": "R$ 475,00",
+      "display-e-lcd/apple/tela-display-lcd-iphone-16-pro-max-jk-troca-ci/index.html": "R$ 48,00",
+      "display/samsung/tela-display-lcd-samsung-s23-s911-oled-com-aro/index.html": "R$ 1.050,00",
+      "display/samsung/tela-display-lcd-samsung-s23-plus-s916-oled-com-aro/index.html": "R$ 48,00",
+      "display/samsung/tela-display-lcd-samsung-s23-ultra-5g-s918-oled-com-aro/index.html": "R$ 475,00",
+      "display/samsung/tela-display-lcd-samsung-s23-fe-s23-fe-s711-oled-com-aro/index.html": "R$ 48,00",
+      "display-e-lcd/samsung/tela-display-lcd-samsung-s23-5g-s911-original-retirada-sem-aro/index.html": "R$ 1.050,00",
+      "display-e-lcd/samsung/tela-display-lcd-samsung-s24-plus-s926-sem-aro-original-nacional/index.html": "R$ 1.050,00",
+      "display-e-lcd/samsung/tela-display-lcd-samsung-s24-fe-s721-sem-aro-original-nacional/index.html": "R$ 48,00"
+    };
+
+    function setCardDefaults(card) {
+      card.style.setProperty("--t7-rotate-x", "0deg");
+      card.style.setProperty("--t7-rotate-y", "0deg");
+      card.style.setProperty("--t7-shadow-x", "0px");
+      card.style.setProperty("--t7-shadow-y", "28px");
+      card.style.setProperty("--t7-pointer-x", "50%");
+      card.style.setProperty("--t7-pointer-y", "18%");
+      card.style.setProperty("--t7-glow", "0.22");
+    }
+
+    function enhanceSlide(slide, index) {
+      var link = slide.querySelector("a[href]");
+      var card = slide.querySelector(".t7-carousel-card");
+      var title = slide.querySelector(".t7-carousel-title");
+      var priceNode = slide.querySelector(".t7-carousel-price");
+      if (link) {
+        var href = link.getAttribute("href");
+        if (priceNode && href && priceByHref[href]) priceNode.textContent = priceByHref[href];
+        link.classList.add("t7-carousel-link");
+        if (!link.getAttribute("aria-label") && title) {
+          link.setAttribute("aria-label", "Ver produto " + title.textContent.trim());
+        }
+      }
+      if (!card) return;
+      card.setAttribute("data-t7-card", String(index));
+      setCardDefaults(card);
+      if (reducedMotion) return;
+
+      card.addEventListener("pointermove", function (event) {
+        var rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        var px = (event.clientX - rect.left) / rect.width;
+        var py = (event.clientY - rect.top) / rect.height;
+        var rotateY = (px - 0.5) * 13;
+        var rotateX = (0.5 - py) * 9;
+        var shadowX = (px - 0.5) * -24;
+        var shadowY = 24 + (py * 16);
+        card.style.setProperty("--t7-rotate-x", rotateX.toFixed(2) + "deg");
+        card.style.setProperty("--t7-rotate-y", rotateY.toFixed(2) + "deg");
+        card.style.setProperty("--t7-shadow-x", shadowX.toFixed(1) + "px");
+        card.style.setProperty("--t7-shadow-y", shadowY.toFixed(1) + "px");
+        card.style.setProperty("--t7-pointer-x", (px * 100).toFixed(1) + "%");
+        card.style.setProperty("--t7-pointer-y", (py * 100).toFixed(1) + "%");
+        card.style.setProperty("--t7-glow", "0.58");
+      });
+      card.addEventListener("pointerleave", function () { setCardDefaults(card); });
+    }
+
+    function syncActiveState() {
+      slides.forEach(function (slide) {
+        var active = slide.classList.contains("swiper-slide-active");
+        var card = slide.querySelector(".t7-carousel-card");
+        slide.classList.toggle("t7-slide-active-3d", active);
+        if (card && !active) setCardDefaults(card);
+      });
+    }
+
+    slides.forEach(enhanceSlide);
+
+    function initSwiper() {
+      if (!window.Swiper) {
+        swiperEl.classList.add("t7-swiper-fallback");
+        return;
+      }
+
+      var swiperInstance = new window.Swiper(swiperEl, {
+        loop: slides.length > 3,
+        centeredSlides: true,
+        grabCursor: true,
+        speed: 520,
+        watchSlidesProgress: true,
+        preloadImages: false,
+        updateOnImagesReady: true,
+        slidesPerView: 3,
+        spaceBetween: 24,
+        effect: "coverflow",
+        coverflowEffect: {
+          rotate: 18,
+          stretch: 0,
+          depth: 180,
+          modifier: 1,
+          slideShadows: false
+        },
+        autoplay: reducedMotion ? false : {
+          delay: 3000,
+          disableOnInteraction: false
+        },
+        pagination: {
+          el: ".t7-swiper-pagination",
+          clickable: true
+        },
+        navigation: {
+          nextEl: ".t7-swiper-next",
+          prevEl: ".t7-swiper-prev"
+        },
+        breakpoints: {
+          767: {
+            slidesPerView: 1.08,
+            spaceBetween: 14,
+            coverflowEffect: { rotate: 8, stretch: 0, depth: 80, modifier: .85, slideShadows: false }
+          },
+          1024: {
+            slidesPerView: 2.15,
+            spaceBetween: 20,
+            coverflowEffect: { rotate: 14, stretch: 0, depth: 130, modifier: .95, slideShadows: false }
+          }
+        },
+        on: {
+          init: syncActiveState,
+          slideChangeTransitionStart: syncActiveState,
+          slideChangeTransitionEnd: syncActiveState,
+          resize: syncActiveState
+        }
+      });
+      swiperEl.t7Swiper = swiperInstance;
+      if (swiperInstance.autoplay && swiperInstance.autoplay.start) swiperInstance.autoplay.start();
+      window.setTimeout(syncActiveState, 80);
+    }
+
+    if (window.Swiper) {
+      initSwiper();
+      return;
+    }
+
+    var script = document.createElement("script");
+    script.src = "_assets/images.tcdn.com.br/files/996644/themes/46/js/swiper.min__e4660e26.js";
+    script.onload = initSwiper;
+    script.onerror = function () { swiperEl.classList.add("t7-swiper-fallback"); };
+    document.head.appendChild(script);
   });
-  if (!items.length) return;
-  var wrap = section.querySelector(".t7-carousel-wrap");
-  if (!wrap) return;
-  wrap.innerHTML = '<div class="t7-tech-carousel-shell"><div class="t7-tech-carousel-viewport"><button class="t7-tech-nav prev" aria-label="Anterior">‹</button><div class="t7-tech-carousel-track"></div><button class="t7-tech-nav next" aria-label="Próximo">›</button></div><div class="t7-tech-dots"></div></div>';
-  var track = wrap.querySelector(".t7-tech-carousel-track");
-  var dots = wrap.querySelector(".t7-tech-dots");
-  var prev = wrap.querySelector(".t7-tech-nav.prev");
-  var next = wrap.querySelector(".t7-tech-nav.next");
-  var activeIndex = 0;
-  var timer = null;
-  var safe = function (value) {
-    return String(value || "").replace(/[&<>"']/g, function (char) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
-    });
-  };
-  var buildCard = function (item, offset) {
-    var active = offset === 0;
-    return '<div class="t7-tech-card' + (active ? ' t7-active' : '') + '" data-offset="' + offset + '"><div class="t7-tech-card-inner"><div class="t7-tech-card-media"><img src="' + safe(item.image) + '" alt="' + safe(item.title) + '" loading="eager"></div><div class="t7-tech-card-body"><span class="t7-tech-brand">' + safe(item.brand) + '</span><h3 class="t7-tech-title">' + safe(item.title) + '</h3><p class="t7-tech-subtitle">' + safe(item.subtitle) + '</p><div class="t7-tech-bottom"><span class="t7-tech-price">' + safe(item.price) + '</span>' + (active ? '<a class="t7-tech-cta" href="' + safe(item.href) + '">Ver produto</a>' : '') + '</div></div></div></div>';
-  };
-  var applyTransforms = function () {
-    track.querySelectorAll(".t7-tech-card").forEach(function (card) {
-      var offset = parseInt(card.getAttribute("data-offset"), 10) || 0;
-      var abs = Math.abs(offset);
-      var x = offset * 290;
-      var rotateY = offset * -22;
-      var scale = offset === 0 ? 1.08 : abs === 1 ? 0.9 : 0.76;
-      var opacity = abs > 2 ? 0 : abs === 2 ? 0.28 : abs === 1 ? 0.62 : 1;
-      var blur = abs > 1 ? 2 : 0;
-      card.style.transform = "translate(-50%, -50%) translateX(" + x + "px) rotateY(" + rotateY + "deg) scale(" + scale + ")";
-      card.style.opacity = String(opacity);
-      card.style.filter = "blur(" + blur + "px)";
-      card.style.zIndex = String(100 - abs);
-    });
-  };
-  var render = function () {
-    var html = "";
-    [-2, -1, 0, 1, 2].forEach(function (offset) {
-      var idx = (activeIndex + offset + items.length) % items.length;
-      html += buildCard(items[idx], offset);
-    });
-    track.innerHTML = html;
-    dots.innerHTML = items.map(function (_, index) {
-      return '<button class="t7-tech-dot' + (index === activeIndex ? ' active' : '') + '" data-index="' + index + '" aria-label="Ir para slide ' + (index + 1) + '"></button>';
-    }).join("");
-    applyTransforms();
-    track.querySelectorAll(".t7-tech-card").forEach(function (card) {
-      card.addEventListener("click", function () {
-        var anchor = card.querySelector(".t7-tech-cta");
-        if (anchor) window.location.href = anchor.getAttribute("href");
-      });
-    });
-    dots.querySelectorAll(".t7-tech-dot").forEach(function (dot) {
-      dot.addEventListener("click", function () {
-        activeIndex = parseInt(dot.getAttribute("data-index"), 10) || 0;
-        render();
-        resetAuto();
-      });
-    });
-  };
-  var move = function (step) {
-    activeIndex = (activeIndex + step + items.length) % items.length;
-    render();
-    resetAuto();
-  };
-  var resetAuto = function () {
-    if (timer) window.clearInterval(timer);
-    timer = window.setInterval(function () {
-      activeIndex = (activeIndex + 1) % items.length;
-      render();
-    }, 4200);
-  };
-  prev.addEventListener("click", function () { move(-1); });
-  next.addEventListener("click", function () { move(1); });
-  render();
-  resetAuto();
-});
+})();
 </script><script id="T7-FALLBACK-IMG">document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".section-showcase img.lazyload,.section-showcase img.second-image").forEach(function(img){if(!img.getAttribute("src")&&img.getAttribute("data-src")){img.setAttribute("src",img.getAttribute("data-src"));}});});</script><div class="banner-info container"><div class="open_desk flex justify-between"><div class="item"><div class="line flex justify-center align-center"><img alt="TECNOLOGIA" class="icon" src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/line-pagamento__e4660e26.png"/><span class="text"><span class="featured">TECNOLOGIA</span> Produtos de alta Qualidade
                         </span></div></div><div class="item"><div class="line flex justify-center align-center"><img alt="ENTREGA RÁPIDA" class="icon" src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/line-frete__e4660e26.png"/><span class="text"><span class="featured">ENTREGA RÁPIDA</span> Enviamos suas compras para todo Brasil
                         </span></div></div><div class="item"><div class="line flex justify-center align-center"><img alt="SITE SEGURO" class="icon" src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/line-seguro__e4660e26.png"/><span class="text"><span class="featured">SITE SEGURO</span> Compre com segurança
@@ -936,7 +1116,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                     R$ 1.600,00
                                             </span></div></div><div class="product-payment"><br/><span class="txt-corparcelas"><span class="txt-corparcelas"><span class="preco-parc2"> ou
                                             <strong class="color"> 3<span>x</span></strong></span></span></span><span class="preco-de"> de </span><span class="txt-cadaparcelas"><strong class="preco-parc2">R$
-                                        <span><span>621<span>,<span>26</span></span></span></span></strong></span><span class="operadora"> com juros </span><span class="txt-forma-pagamento">MasterCard - Vindi</span><!-- 3|621.26|{lower_price}|79 --></div></div></div></a><div class="variants hide-on-mobile"><form class="list-variants" data-api-cart="1" data-id="5863" data-variants='[{"price":{"price":1600,"payment":"ou 3x de R$ 621,26 com juros MasterCard - Vindi"},"id":"4307","stock":2,"option":"Preto"},{"price":{"price":1600,"payment":"ou 3x de R$ 621,26 com juros MasterCard - Vindi"},"id":"4309","stock":0,"option":"Rosa"}]'><label><span>Cor</span><select class="first" required=""><option hidden="" value="">Selecione</option><option value="Preto">Preto</option><option value="Rosa">Rosa</option></select></label><div class="flex add-cart"><input required="" type="number" value="1"/><button class="action">Adicionar ao carrinho</button></div></form></div></div></div></div><div class="section-faq-tech7" id="duvidas-frequentes"><div class="container"><h2 class="title-section"><span>Dúvidas frequentes</span></h2><div class="faq-list"><a class="faq-item" href="duvidas-troca-de-pecas-de-celular/index.html"><span class="faq-title">Troca de peças de celular</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-descontos-vigentes/index.html"><span class="faq-title">Descontos vigentes</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-tipos-de-telas/index.html"><span class="faq-title">Tipos de telas</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-tipos-de-baterias/index.html"><span class="faq-title">Tipos de baterias</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-qualidade-dos-produtos/index.html"><span class="faq-title">Qualidade dos produtos</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-trocas-e-devolucoes/index.html"><span class="faq-title">Trocas e devoluções</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-informacoes-sobre-o-frete/index.html"><span class="faq-title">Informações sobre o frete</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-politica-de-privacidade/index.html"><span class="faq-title">Política de privacidade</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-servico-de-instalacao/index.html"><span class="faq-title">Serviço de instalação</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-alerta-de-fraude/index.html"><span class="faq-title">Alerta de fraude</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-aviso-de-prazo-de-entrega/index.html"><span class="faq-title">Aviso de prazo de entrega</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-curso-tecnico-presencial/index.html"><span class="faq-title">Curso técnico presencial</span><span class="faq-arrow">Ver conteúdo →</span></a></div></div></div><div class="section-brands"><div class="swiper-container slide-brand"><div class="list swiper-wrapper"><div class="swiper-slide"><a class="box-brand" href="Apple/index.html"><img alt="Apple" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Apple__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Samsung/index.html"><img alt="Samsung" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Samsung__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Motorola/index.html"><img alt="Motorola" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Moto6__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="LG/index.html"><img alt="LG" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/LG1__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Xiaomi/index.html"><img alt="Xiaomi" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Xiaomi__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Asus/index.html"><img alt="Asus" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Asus__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Realme/index.html"><img alt="Realme" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/realme-01__e4660e26.png"/></a></div></div><div class="prev arrow-icon"></div><div class="next arrow-icon"></div></div></div><div class="section-avaliacoes"><h2 class="title-section"><span>Depoimentos</span></h2><div class="relative"><ul class="dep_lista"><li class="dep_item"><ul class="dep_dados"><li class="dep_nome"><span>Nome: </span> Alexandre Godoy</li><li class="dep_nota"><span>Avaliação:</span> Positivo</li><li class="dep_msg"><span>Depoimento:</span> Loja oferece produtos de qualidade e ótimos preços.</li><li class="dep_data"><span>Comentado em:</span> 16/09/2022</li></ul></li><li style="display: none;"><div itemscope="" itemtype="http://schema.org/Review"><a href="index.html" itemprop="url"><div itemprop="name"><strong>TECH 7</strong></div></a><div itemprop="description"></div><div itemprop="reviewBody">Loja oferece produtos de qualidade e ótimos preços.</div><div itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+                                        <span><span>621<span>,<span>26</span></span></span></span></strong></span><span class="operadora"> com juros </span><span class="txt-forma-pagamento">MasterCard - Vindi</span><!-- 3|621.26|{lower_price}|79 --></div></div></div></a><div class="variants hide-on-mobile"><form class="list-variants" data-api-cart="1" data-id="5863" data-variants='[{"price":{"price":1600,"payment":"ou 3x de R$ 621,26 com juros MasterCard - Vindi"},"id":"4307","stock":2,"option":"Preto"},{"price":{"price":1600,"payment":"ou 3x de R$ 621,26 com juros MasterCard - Vindi"},"id":"4309","stock":0,"option":"Rosa"}]'><label><span>Cor</span><select class="first" required=""><option hidden="" value="">Selecione</option><option value="Preto">Preto</option><option value="Rosa">Rosa</option></select></label><div class="flex add-cart"><input required="" type="number" value="1"/><button class="action">Adicionar ao carrinho</button></div></form></div></div></div></div><div class="section-faq-tech7" id="duvidas-frequentes"><div class="container"><h2 class="title-section"><span>Dúvidas frequentes</span></h2><div class="faq-list"><a class="faq-item" href="duvidas-troca-de-pecas-de-celular/index.html"><span class="faq-title">Troca de peças de celular</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-tipos-de-telas/index.html"><span class="faq-title">Tipos de telas</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-tipos-de-baterias/index.html"><span class="faq-title">Tipos de baterias</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-qualidade-dos-produtos/index.html"><span class="faq-title">Qualidade dos produtos</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-trocas-e-devolucoes/index.html"><span class="faq-title">Trocas e devoluções</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-informacoes-sobre-o-frete/index.html"><span class="faq-title">Informações sobre o frete</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-politica-de-privacidade/index.html"><span class="faq-title">Política de privacidade</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-servico-de-instalacao/index.html"><span class="faq-title">Serviço de instalação</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-alerta-de-fraude/index.html"><span class="faq-title">Alerta de fraude</span><span class="faq-arrow">Ver conteúdo →</span></a><a class="faq-item" href="duvidas-aviso-de-prazo-de-entrega/index.html"><span class="faq-title">Aviso de prazo de entrega</span><span class="faq-arrow">Ver conteúdo →</span></a></div></div></div><div class="section-brands"><div class="swiper-container slide-brand"><div class="list swiper-wrapper"><div class="swiper-slide"><a class="box-brand" href="Apple/index.html"><img alt="Apple" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Apple__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Samsung/index.html"><img alt="Samsung" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Samsung__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Motorola/index.html"><img alt="Motorola" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Moto6__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="LG/index.html"><img alt="LG" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/LG1__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Xiaomi/index.html"><img alt="Xiaomi" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Xiaomi__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Asus/index.html"><img alt="Asus" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/Asus__e4660e26.png"/></a></div><div class="swiper-slide"><a class="box-brand" href="Realme/index.html"><img alt="Realme" class="swiper-lazy" data-src="_assets/images.tcdn.com.br/files/996644/themes/46/img/settings/realme-01__e4660e26.png"/></a></div></div><div class="prev arrow-icon"></div><div class="next arrow-icon"></div></div></div><div class="section-avaliacoes"><h2 class="title-section"><span>Depoimentos</span></h2><div class="relative"><ul class="dep_lista"><li class="dep_item"><ul class="dep_dados"><li class="dep_nome"><span>Nome: </span> Alexandre Godoy</li><li class="dep_nota"><span>Avaliação:</span> Positivo</li><li class="dep_msg"><span>Depoimento:</span> Loja oferece produtos de qualidade e ótimos preços.</li><li class="dep_data"><span>Comentado em:</span> 16/09/2022</li></ul></li><li style="display: none;"><div itemscope="" itemtype="http://schema.org/Review"><a href="index.html" itemprop="url"><div itemprop="name"><strong>TECH 7</strong></div></a><div itemprop="description"></div><div itemprop="reviewBody">Loja oferece produtos de qualidade e ótimos preços.</div><div itemprop="author" itemscope="" itemtype="http://schema.org/Person">
                     Written by: <span itemprop="name">Alexandre Godoy</span></div><div itemprop="itemReviewed" itemscope="" itemtype="http://schema.org/Organization"><span itemprop="name">TECH 7</span></div><div><meta content="2022-09-16" itemprop="datePublished"/></div><div itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating"><meta content="0" itemprop="worstRating"/><span itemprop="ratingValue">1</span> / <span itemprop="bestRating">1</span> stars
                 </div></div></li><li class="dep_item"><ul class="dep_dados"><li class="dep_nome"><span>Nome: </span> Guilherme Silva</li><li class="dep_nota"><span>Avaliação:</span> Positivo</li><li class="dep_msg"><span>Depoimento:</span> Achei bastante variedade dos produtos que eu precisava e chegou tudo certinho. Ótimo atendimento e e...</li><li class="dep_data"><span>Comentado em:</span> 16/09/2022</li></ul></li><li style="display: none;"><div itemscope="" itemtype="http://schema.org/Review"><a href="index.html" itemprop="url"><div itemprop="name"><strong>TECH 7</strong></div></a><div itemprop="description"></div><div itemprop="reviewBody">Achei bastante variedade dos produtos que eu precisava e chegou tudo certinho. Ótimo atendimento e e...</div><div itemprop="author" itemscope="" itemtype="http://schema.org/Person">
                     Written by: <span itemprop="name">Guilherme Silva</span></div><div itemprop="itemReviewed" itemscope="" itemtype="http://schema.org/Organization"><span itemprop="name">TECH 7</span></div><div><meta content="2022-09-16" itemprop="datePublished"/></div><div itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating"><meta content="0" itemprop="worstRating"/><span itemprop="ratingValue">1</span> / <span itemprop="bestRating">1</span> stars
