@@ -44,54 +44,116 @@ html, body {
   box-shadow: 0 10px 40px rgba(17, 17, 17, 0.08);
 }
 
-/* Header & Navigation — white theme */
+/* =====================================================================
+   HEADER & NAVIGATION — preserva fundo escuro do tema original
+   NÃO sobrescrever com branco pois o texto dos itens é branco (#ffffff)
+   ===================================================================== */
+
+/* Barra superior: mantém fundo preto (--header_top: #000000) */
+.bar-top {
+  background: var(--header_top, #000000) !important;
+  color: var(--header_icon_top, #ffffff) !important;
+}
+.bar-top a,
+.bar-top .item,
+.bar-top .text {
+  color: var(--header_text_top, #ffffff) !important;
+}
+
+/* Header principal: mantém fundo preto (--header_top: #000000) */
 .wrapper.menu-icons.position-header,
-.wrapper.menu-icons.position-header .bar-top,
-.wrapper.menu-icons.position-header .container,
 .header,
 .header .bg,
+.header .bg.bg-mob,
 .header .line,
-.header .line.container,
-.nav,
-.nav .container,
-.nav .list,
-.bar-top {
-  background: var(--tech-surface) !important;
-  border-color: var(--tech-border) !important;
+.header .line.container {
+  background: var(--header_top, #000000) !important;
 }
 
-/* Text colors on light background */
-.wrapper.menu-icons.position-header .item,
-.wrapper.menu-icons.position-header .text,
-.bar-top,
-.bar-top a,
+/* Ícones e textos do header: mantém cor branca */
 .header .account span,
 .header .title-store,
-.header .contact .title,
-.header .rastreio .title,
-.header .rastreio .content,
-.header .contact .content,
-.name,
-.nav .name,
-.nav-mobile a,
-.nav-mobile span {
-  color: var(--tech-text) !important;
+.header .icon-user path,
+.header .cart-header .icon path {
+  color: var(--header_icon_top, #ffffff) !important;
+  fill: var(--header_icon_top, #ffffff) !important;
 }
 
-/* Logo container — light pill with subtle border */
+/* Barra de navegação de categorias: fundo preto (--nav_bg: #000000) */
+.nav,
+.nav .container,
+.nav .list {
+  background: var(--nav_bg, #000000) !important;
+}
+
+/* Itens do nav: texto branco (--nav_color: #ffffff) */
+.nav .list > li > a,
+.nav .list > li > a .name,
+.nav .name {
+  color: var(--nav_color, #ffffff) !important;
+}
+
+/* Hover nos itens do nav */
+.nav .list > li > a:hover,
+.nav .list > li > a:hover .name {
+  color: var(--nav_color, #ffffff) !important;
+  background: var(--nav_bg_hover, #ff6a00) !important;
+}
+
+/* Menu mobile: fundo escuro */
+.nav-mobile,
+.nav-mobile .header-nav,
+.nav-mobile .content-nav {
+  background: #111111 !important;
+}
+.nav-mobile a,
+.nav-mobile span,
+.nav-mobile .text {
+  color: #ffffff !important;
+}
+
+/* Sub-menus dropdown: fundo branco com texto escuro */
+.sub-line-category,
+.sub-line-category .header-sub,
+.sub-line-category .over {
+  background: var(--bg_sub, #ffffff) !important;
+}
+.sub-line-category .header-sub {
+  color: var(--tech-text) !important;
+  border-color: var(--nav_color_border, #ff6a00) !important;
+}
+.list-line-sub li a,
+.second-nivel {
+  color: var(--nav_color_sub, #333333) !important;
+}
+.list-line-sub li a:hover,
+.second-nivel:hover {
+  color: var(--nav_bg_hover, #ff6a00) !important;
+}
+
+/* Logo container */
 .header .logo {
-  background: #f8f9fa;
-  border: 1px solid var(--tech-border);
-  border-radius: 6px;
-  padding: 6px 10px;
+  background: transparent !important;
+  border: none !important;
+  padding: 4px 8px;
 }
 .header .logo img {
   max-height: 48px !important;
 }
 
-/* Form inputs — light theme with orange focus */
+/* Search bar — light input dentro do header escuro */
 .header .search-header,
-.search-header .input-search,
+.search-header .input-search {
+  background: var(--tech-input-bg) !important;
+  border: 1px solid var(--tech-border) !important;
+  color: var(--tech-text) !important;
+  border-radius: var(--stitch-radius);
+}
+.search-header .input-search:focus,
+.header .search-header:focus-within {
+  border-color: var(--tech-accent) !important;
+  box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15) !important;
+}
 .rastreio input,
 .modal-theme input,
 .footer .newsletter input {
@@ -100,15 +162,16 @@ html, body {
   color: var(--tech-text) !important;
   border-radius: var(--stitch-radius);
 }
-.search-header .input-search:focus,
-.header .search-header:focus-within,
 .rastreio input:focus,
 .footer .newsletter input:focus {
   border-color: var(--tech-accent) !important;
   box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15) !important;
 }
 
-/* Content sections — light surfaces */
+/* =====================================================================
+   CONTEÚDO PRINCIPAL — fundo branco (correto)
+   ===================================================================== */
+
 .section-showcase,
 .showcase,
 .list-product,
@@ -119,7 +182,7 @@ html, body {
   background: var(--tech-surface) !important;
 }
 
-/* Product cards — white with subtle shadow and orange accent on hover */
+/* Product cards — white com shadow e accent laranja no hover */
 .product,
 .box-product,
 .product-grid .product,
@@ -137,7 +200,7 @@ html, body {
   box-shadow: 0 12px 32px rgba(255, 106, 0, 0.12) !important;
 }
 
-/* Typography — dark text on light */
+/* Typography */
 .product-name,
 .product .name,
 .title-page,
@@ -153,7 +216,7 @@ h1, h2, h3, h4, h5, h6,
   color: var(--tech-text) !important;
 }
 
-/* Price & badges — white on orange (high contrast) */
+/* Price & badges */
 .product .price,
 .product-price .price-off,
 .preco_color,
@@ -168,7 +231,7 @@ h1, h2, h3, h4, h5, h6,
   background: var(--tech-accent) !important;
 }
 
-/* Buttons — solid orange with subtle highlight */
+/* Buttons */
 button,
 .action,
 .botao-commerce,
@@ -195,7 +258,7 @@ input[type='submit']:hover {
   border-color: var(--tech-accent-hover) !important;
 }
 
-/* Footer — dark band for contrast */
+/* Footer */
 .footer,
 .copy {
   background: var(--tech-footer-bg) !important;
@@ -209,7 +272,10 @@ input[type='submit']:hover {
   border-radius: var(--stitch-radius) !important;
 }
 
-/* Utility overrides — force light where needed */
+/* =====================================================================
+   UTILITY OVERRIDES — fundo branco apenas no conteúdo (não no header/nav)
+   ===================================================================== */
+
 .line-info,
 .container-info .open_desk,
 .line-info .line,
@@ -219,8 +285,6 @@ input[type='submit']:hover {
 .list-product,
 .brands,
 .brands .swiper-container,
-.application,
-.application > div,
 .content-home > .container,
 .section-showcase > .showcase,
 .dep-content,
@@ -230,8 +294,7 @@ input[type='submit']:hover {
   color: var(--tech-text) !important;
 }
 
-/* Force white background globally, override any dark remnants */
-body,
+/* Fundo branco somente no conteúdo principal */
 .site-main,
 .page-content,
 .content-home,
@@ -239,8 +302,6 @@ body,
 .section-showcase,
 .section-banners,
 .brands,
-.bg-cat,
-.application,
-.application > div {
+.bg-cat {
   background: #ffffff !important;
 }
