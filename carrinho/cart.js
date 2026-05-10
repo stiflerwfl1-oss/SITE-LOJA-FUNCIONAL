@@ -108,11 +108,7 @@ async function setQty(cartId, productId, qty) {
 
 async function checkout() {
   const cartId = await ensureCart();
-  const order = await api("/orders", { method: "POST", body: JSON.stringify({ cartId }) });
-  const pay = await api("/payments/mercadopago", { method: "POST", body: JSON.stringify({ orderId: order.id }) });
-  const url = pay.initPoint || pay.sandboxInitPoint;
-  if (!url) throw new Error("missing_checkout_url");
-  window.location.href = url;
+  window.location.href = `/checkout/index.html?cart=${encodeURIComponent(cartId)}`;
 }
 
 async function addDemo() {
@@ -146,4 +142,3 @@ document.getElementById("addDemoBtn").addEventListener("click", async () => {
 });
 
 refresh().catch((e) => alert(`Erro: ${e.message}`));
-
