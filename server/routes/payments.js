@@ -43,6 +43,17 @@ router.post("/mercadopago", async (req, res) => {
   const order = orderRes.rows[0];
   if (order.status !== "pending") return res.status(409).json({ error: "order_not_pending" });
 
+  // Idempotency: if a preference already exists for this order, return it.
+  if (order.mp_preference_id) {
+    const pref = await mpFetch(`/checkout/preferences/${encodeURIComponent(order.mp_preference_id)}`);
+    return res.json({
+      orderId,
+      preferenceId: pref.id,
+      initPoint: pref.init_point,
+      sandboxInitPoint: pref.sandbox_init_point
+    });
+  }
+
   const itemsRes = await pool.query(
     `
       select oi.qty, oi.unit_price_cents, p.name
@@ -92,4 +103,3 @@ router.post("/mercadopago", async (req, res) => {
     sandboxInitPoint: preference.sandbox_init_point
   });
 });
-

@@ -11,20 +11,70 @@
       .card { border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:16px; background: rgba(255,255,255,.03); }
       .t { font-weight: 900; font-size: 18px; }
       .m { color: rgba(255,255,255,.72); margin-top: 6px; }
+      .row { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+      .pill { font-size:12px; border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:6px 10px; background: rgba(255,255,255,.04); }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      .muted { color: rgba(255,255,255,.66); }
+      .err { color:#ffb4a6; }
     </style>
   </head>
   <body>
     <div class="c">
       <div class="card">
         <div class="t">Pagamento recebido</div>
-        <div class="m">
-          Seu pedido sera confirmado automaticamente apos o webhook do Mercado Pago.
+        <div class="m" id="msg">Carregando status do pedido...</div>
+        <div class="row" id="meta" style="display:none">
+          <div class="pill">Pedido: <span class="mono" id="orderId"></span></div>
+          <div class="pill">Status: <span class="mono" id="status"></span></div>
+          <div class="pill">Total: <span class="mono" id="total"></span></div>
         </div>
         <div class="m" style="margin-top:10px">
           <a href="/index.html">Voltar para a loja</a>
         </div>
       </div>
     </div>
+    <script>
+      (function () {
+        var params = new URLSearchParams(location.search || "");
+        var order = params.get("order") || "";
+        var msg = document.getElementById("msg");
+        var meta = document.getElementById("meta");
+        var elOrder = document.getElementById("orderId");
+        var elStatus = document.getElementById("status");
+        var elTotal = document.getElementById("total");
+
+        function fmtCents(v) {
+          var n = Number(v || 0);
+          if (!isFinite(n)) n = 0;
+          return (n / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+        }
+
+        if (!order) {
+          msg.textContent = "Pedido nao encontrado na URL.";
+          msg.classList.add("err");
+          return;
+        }
+
+        fetch("/api/orders/" + encodeURIComponent(order))
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (out) {
+            if (!out.ok) throw new Error(out.j && out.j.error ? out.j.error : "order_fetch_failed");
+            elOrder.textContent = out.j.id || order;
+            elStatus.textContent = out.j.status || "unknown";
+            elTotal.textContent = fmtCents(out.j.total_cents);
+            meta.style.display = "";
+
+            if (out.j.status === "paid") {
+              msg.textContent = "Pedido confirmado.";
+            } else {
+              msg.innerHTML = 'Pagamento recebido. Seu pedido sera confirmado apos o webhook do Mercado Pago. <span class="muted">(Status atual: ' + String(out.j.status || "unknown") + ")</span>";
+            }
+          })
+          .catch(function () {
+            msg.textContent = "Nao foi possivel carregar o status do pedido agora.";
+            msg.classList.add("err");
+          });
+      })();
+    </script>
   </body>
 </html>
-
