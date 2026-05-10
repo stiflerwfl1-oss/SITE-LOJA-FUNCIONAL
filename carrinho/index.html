@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TECH 7 - Carrinho</title>
+    <link rel="icon" href="/logo.png" />
+    <style>
+      :root {
+        --bg: #0b0b0b;
+        --panel: #121212;
+        --muted: #a3a3a3;
+        --text: #ffffff;
+        --line: #2a2a2a;
+        --accent: #ff6a00;
+        --accent2: #e65f00;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 700px at 10% -10%, rgba(255,106,0,.25), transparent 60%),
+                    radial-gradient(1000px 800px at 110% 0%, rgba(255,106,0,.18), transparent 55%),
+                    var(--bg);
+        color: var(--text);
+      }
+      a { color: inherit; text-decoration: none; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: rgba(0,0,0,.7);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,.06);
+      }
+      .container { max-width: 1040px; margin: 0 auto; padding: 16px; }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand img { width: 34px; height: 34px; border-radius: 8px; }
+      .brand .t { font-weight: 800; letter-spacing: 0; }
+      .brand .s { color: var(--muted); font-size: 12px; }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 16px;
+        padding: 18px 16px 40px;
+      }
+      @media (max-width: 920px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+      .card {
+        background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .card h2 {
+        margin: 0;
+        padding: 14px 16px;
+        font-size: 14px;
+        letter-spacing: 0;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .muted { color: var(--muted); }
+      .items { padding: 10px 12px; }
+      .row {
+        display: grid;
+        grid-template-columns: 56px 1fr auto;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 10px;
+        background: rgba(0,0,0,.25);
+      }
+      .row + .row { margin-top: 10px; }
+      .thumb {
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.06);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .thumb img { width: 100%; height: 100%; object-fit: cover; }
+      .name { font-weight: 700; font-size: 14px; }
+      .meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+      .right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+      .price { font-weight: 800; }
+      .qty {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 10px;
+        overflow: hidden;
+        background: rgba(0,0,0,.35);
+      }
+      .qty button {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+      }
+      .qty input {
+        width: 48px;
+        height: 34px;
+        border: 0;
+        outline: none;
+        text-align: center;
+        background: transparent;
+        color: var(--text);
+        font-weight: 700;
+      }
+      .btn {
+        width: 100%;
+        border: 0;
+        cursor: pointer;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(180deg, var(--accent), var(--accent2));
+      }
+      .btn:disabled { opacity: .6; cursor: not-allowed; }
+      .btn.secondary {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,.14);
+      }
+      .summary { padding: 14px 16px; display: grid; gap: 10px; }
+      .line { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+      .total { font-size: 16px; font-weight: 900; }
+      .note { font-size: 12px; color: var(--muted); line-height: 1.4; }
+      .empty { padding: 18px 16px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container">
+        <a class="brand" href="/index.html">
+          <img src="/logo.png" alt="TECH 7" />
+          <div>
+            <div class="t">TECH 7</div>
+            <div class="s">Carrinho</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="grid">
+        <div class="card">
+          <h2>
+            <span>Itens</span>
+            <span class="muted" id="cartIdLabel"></span>
+          </h2>
+          <div class="items" id="items"></div>
+          <div class="empty" id="empty" style="display:none">
+            Seu carrinho esta vazio.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Resumo</h2>
+          <div class="summary">
+            <div class="line"><span class="muted">Subtotal</span><span id="subtotal">R$ 0,00</span></div>
+            <div class="line"><span class="muted">Frete</span><span class="muted">Calculado no checkout</span></div>
+            <div class="line total"><span>Total</span><span id="total">R$ 0,00</span></div>
+            <button class="btn" id="checkoutBtn" disabled>Finalizar compra</button>
+            <button class="btn secondary" id="addDemoBtn">Adicionar item demo</button>
+            <div class="note">
+              O pagamento abre no Mercado Pago. O status do pedido e confirmado por webhook no servidor.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./cart.js"></script>
+  </body>
+  </html>
+
