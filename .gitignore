@@ -4,3 +4,39 @@ node_modules/
 .codex/
 npm-debug.log*
 
+# Agent/tooling folders
+.adal/
+.augment/
+.bob/
+.claude/
+.codebuddy/
+.commandcode/
+.continue/
+.cortex/
+.crush/
+.factory/
+.goose/
+.iflow/
+.junie/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+
+# Local skills/tool outputs not part of storefront
+skills/
+skills-lock.json
+
+# Local helper artifacts
+*.log
