@@ -4,187 +4,644 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TECH 7 - Carrinho</title>
-    <link rel="icon" href="/logo.png" />
+    <link rel="icon" href="../logo.png" />
+    <link rel="stylesheet" href="../_custom/tech7-theme.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
     <style>
       :root {
-        --bg: #0b0b0b;
-        --panel: #121212;
-        --muted: #a3a3a3;
-        --text: #ffffff;
-        --line: #2a2a2a;
-        --accent: #ff6a00;
-        --accent2: #e65f00;
+        --space-1: 4px;
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-5: 20px;
+        --space-6: 24px;
+        --space-8: 32px;
+        --space-10: 40px;
+        --radius: 8px;
+        --shadow-card: 0 4px 20px rgba(17, 17, 17, 0.06);
+        --shadow-hover: 0 12px 32px rgba(255, 106, 0, 0.12);
+        --ease: 180ms cubic-bezier(0.16, 1, 0.3, 1);
       }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        background: radial-gradient(1200px 700px at 10% -10%, rgba(255,106,0,.25), transparent 60%),
-                    radial-gradient(1000px 800px at 110% 0%, rgba(255,106,0,.18), transparent 55%),
-                    var(--bg);
-        color: var(--text);
-      }
-      a { color: inherit; text-decoration: none; }
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 5;
-        background: rgba(0,0,0,.7);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255,255,255,.06);
-      }
-      .container { max-width: 1040px; margin: 0 auto; padding: 16px; }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .brand img { width: 34px; height: 34px; border-radius: 8px; }
-      .brand .t { font-weight: 800; letter-spacing: 0; }
-      .brand .s { color: var(--muted); font-size: 12px; }
 
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 360px;
-        gap: 16px;
-        padding: 18px 16px 40px;
+      * { box-sizing: border-box; }
+      body { min-height: 100vh; }
+      a { color: inherit; text-decoration: none; }
+      button, input { font: inherit; }
+
+      .t7-header {
+        background: #000;
+        color: #fff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       }
-      @media (max-width: 920px) {
-        .grid { grid-template-columns: 1fr; }
-      }
-      .card {
-        background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-        border: 1px solid rgba(255,255,255,.08);
-        border-radius: 12px;
-        overflow: hidden;
-      }
-      .card h2 {
-        margin: 0;
-        padding: 14px 16px;
-        font-size: 14px;
-        letter-spacing: 0;
-        border-bottom: 1px solid rgba(255,255,255,.08);
+
+      .t7-header__inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        min-height: 82px;
+        padding: var(--space-4);
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: var(--space-4);
       }
-      .muted { color: var(--muted); }
-      .items { padding: 10px 12px; }
-      .row {
+
+      .t7-logo {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        min-width: 0;
+      }
+
+      .t7-logo img {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius);
+        object-fit: cover;
+      }
+
+      .t7-logo strong {
+        display: block;
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .t7-logo span {
+        color: #d1d5db;
+        display: block;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .t7-nav {
+        display: none;
+        align-items: center;
+        gap: var(--space-5);
+        font-weight: 700;
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+
+      .t7-nav a { transition: color var(--ease); }
+      .t7-nav a:hover, .t7-nav a:focus-visible { color: var(--tech-accent); }
+
+      .t7-cart-link {
+        width: 44px;
+        height: 44px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: var(--radius);
         display: grid;
-        grid-template-columns: 56px 1fr auto;
-        gap: 12px;
-        padding: 12px;
-        border: 1px solid rgba(255,255,255,.08);
-        border-radius: 10px;
-        background: rgba(0,0,0,.25);
+        place-items: center;
+        position: relative;
+        transition: border-color var(--ease), background var(--ease);
       }
-      .row + .row { margin-top: 10px; }
-      .thumb {
-        width: 56px;
-        height: 56px;
-        border-radius: 10px;
-        background: rgba(255,255,255,.06);
+
+      .t7-cart-link:hover {
+        border-color: var(--tech-accent);
+        background: rgba(255, 106, 0, 0.16);
+      }
+
+      .cart-count-badge {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        min-width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        background: var(--tech-accent);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 0 6px;
+      }
+
+      .cart-page {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: var(--space-8) var(--space-4) var(--space-10);
+      }
+
+      .cart-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+      }
+
+      .cart-title h1 {
+        margin: 0;
+        color: var(--tech-text);
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-size: clamp(28px, 4vw, 42px);
+        line-height: 1.05;
+      }
+
+      .cart-title p {
+        margin: 8px 0 0;
+        color: var(--tech-text-muted);
+        font-weight: 500;
+      }
+
+      .continue-link {
+        min-height: 44px;
+        border: 1px solid var(--tech-border);
+        border-radius: var(--radius);
+        color: var(--tech-text);
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 14px;
+        font-weight: 700;
+        transition: border-color var(--ease), color var(--ease), box-shadow var(--ease);
+        white-space: nowrap;
+      }
+
+      .continue-link:hover {
+        border-color: var(--tech-accent);
+        color: var(--tech-accent);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .cart-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+        align-items: start;
+      }
+
+      .cart-panel,
+      .summary-card {
+        background: #fff;
+        border: 1px solid var(--tech-border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-card);
+      }
+
+      .cart-panel__head {
+        padding: var(--space-5) var(--space-6);
+        border-bottom: 1px solid var(--tech-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+      }
+
+      .cart-panel__head h2,
+      .summary-card h2 {
+        margin: 0;
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-size: 20px;
+        color: var(--tech-text);
+      }
+
+      .cart-id {
+        color: var(--tech-text-muted);
+        font-size: 12px;
+      }
+
+      .cart-items {
+        min-height: 180px;
+      }
+
+      .cart-item {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: var(--space-4);
+        padding: var(--space-5) var(--space-6);
+        border-bottom: 1px solid var(--tech-border);
+        transition: opacity var(--ease), transform var(--ease), max-height var(--ease), padding var(--ease);
+      }
+
+      .cart-item.is-removing {
+        opacity: 0;
+        transform: translateX(-12px);
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        overflow: hidden;
+      }
+
+      .cart-item:last-child { border-bottom: 0; }
+
+      .cart-thumb {
+        width: 80px;
+        height: 80px;
+        border-radius: var(--radius);
+        background: var(--tech-surface-alt);
+        border: 1px solid var(--tech-border);
         display: grid;
         place-items: center;
         overflow: hidden;
       }
-      .thumb img { width: 100%; height: 100%; object-fit: cover; }
-      .name { font-weight: 700; font-size: 14px; }
-      .meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
-      .right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-      .price { font-weight: 800; }
-      .qty {
+
+      .cart-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .cart-item__body {
+        min-width: 0;
+        display: grid;
+        gap: var(--space-3);
+      }
+
+      .cart-item__main {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .cart-item__name {
+        color: var(--tech-text);
+        font-weight: 500;
+        line-height: 1.35;
+      }
+
+      .cart-item__variation {
+        color: var(--tech-text-muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .cart-item__price {
+        color: var(--tech-accent);
+        font-weight: 800;
+      }
+
+      .cart-item__actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+      }
+
+      .qty-control {
+        display: inline-grid;
+        grid-template-columns: 44px 54px 44px;
+        height: 44px;
+        border: 1px solid var(--tech-border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .qty-control button {
+        border: 0;
+        background: #fff;
+        color: var(--tech-text);
+        cursor: pointer;
+        transition: background var(--ease), color var(--ease);
+      }
+
+      .qty-control button:hover {
+        background: var(--tech-accent-soft);
+        color: var(--tech-accent);
+      }
+
+      .qty-control input {
+        border: 0;
+        border-inline: 1px solid var(--tech-border);
+        text-align: center;
+        color: var(--tech-text);
+        font-weight: 800;
+        font-size: 16px;
+        outline: none;
+      }
+
+      .qty-control input:focus {
+        box-shadow: inset 0 0 0 2px rgba(255, 106, 0, 0.35);
+      }
+
+      .remove-btn {
+        min-height: 44px;
+        border: 0;
+        background: transparent;
+        color: var(--tech-text-muted);
         display: inline-flex;
         align-items: center;
-        border: 1px solid rgba(255,255,255,.12);
-        border-radius: 10px;
-        overflow: hidden;
-        background: rgba(0,0,0,.35);
-      }
-      .qty button {
-        width: 34px;
-        height: 34px;
-        border: 0;
-        background: transparent;
-        color: var(--text);
+        gap: 8px;
         cursor: pointer;
-      }
-      .qty input {
-        width: 48px;
-        height: 34px;
-        border: 0;
-        outline: none;
-        text-align: center;
-        background: transparent;
-        color: var(--text);
+        padding: 0;
         font-weight: 700;
+        transition: color var(--ease);
       }
-      .btn {
-        width: 100%;
-        border: 0;
-        cursor: pointer;
-        border-radius: 12px;
-        padding: 12px 14px;
+
+      .remove-btn:hover { color: var(--tech-accent); }
+
+      .summary-card {
+        background: var(--tech-surface-alt);
+        padding: var(--space-6);
+      }
+
+      .summary-list {
+        display: grid;
+        gap: var(--space-4);
+        margin-top: var(--space-5);
+      }
+
+      .summary-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        color: var(--tech-text-muted);
+      }
+
+      .summary-line strong {
+        color: var(--tech-text);
         font-weight: 800;
+      }
+
+      .delivery-line {
+        align-items: flex-start;
+        line-height: 1.4;
+      }
+
+      .summary-divider {
+        height: 1px;
+        background: var(--tech-border);
+        margin: var(--space-2) 0;
+      }
+
+      .summary-total {
+        color: var(--tech-text);
+        font-weight: 800;
+      }
+
+      .summary-total strong {
+        color: var(--tech-accent);
+        font-size: 24px;
+      }
+
+      .checkout-btn,
+      .demo-btn,
+      .empty-btn {
+        width: 100%;
+        min-height: 52px;
+        border-radius: var(--radius);
+        border: 1px solid var(--tech-accent);
+        background: var(--tech-accent);
         color: #fff;
-        background: linear-gradient(180deg, var(--accent), var(--accent2));
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background var(--ease), border-color var(--ease), box-shadow var(--ease), transform var(--ease);
       }
-      .btn:disabled { opacity: .6; cursor: not-allowed; }
-      .btn.secondary {
+
+      .checkout-btn:hover,
+      .empty-btn:hover {
+        background: var(--tech-accent-hover);
+        border-color: var(--tech-accent-hover);
+        box-shadow: 0 4px 16px rgba(255, 106, 0, 0.35);
+      }
+
+      .checkout-btn:disabled,
+      .demo-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .demo-btn {
         background: transparent;
-        border: 1px solid rgba(255,255,255,.14);
+        color: var(--tech-accent);
+        margin-top: var(--space-3);
       }
-      .summary { padding: 14px 16px; display: grid; gap: 10px; }
-      .line { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-      .total { font-size: 16px; font-weight: 900; }
-      .note { font-size: 12px; color: var(--muted); line-height: 1.4; }
-      .empty { padding: 18px 16px; color: var(--muted); }
+
+      .secure-note,
+      .payment-badges {
+        color: var(--tech-text-muted);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        justify-content: center;
+      }
+
+      .payment-badges span {
+        border: 1px solid var(--tech-border);
+        border-radius: 999px;
+        background: #fff;
+        padding: 6px 10px;
+        color: var(--tech-text);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .empty-state {
+        padding: var(--space-10) var(--space-6);
+        display: grid;
+        justify-items: center;
+        text-align: center;
+        gap: var(--space-3);
+        color: var(--tech-text-muted);
+      }
+
+      .empty-state svg {
+        width: 64px;
+        height: 64px;
+        color: var(--tech-border);
+      }
+
+      .empty-state h2 {
+        margin: 0;
+        color: var(--tech-text);
+        font-family: "Space Grotesk", Inter, sans-serif;
+      }
+
+      .empty-state p { margin: 0 0 var(--space-2); }
+
+      .skeleton {
+        padding: var(--space-6);
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      .skeleton-row {
+        height: 92px;
+        border-radius: var(--radius);
+        background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+        background-size: 400% 100%;
+        animation: shimmer 1.4s ease infinite;
+      }
+
+      .cart-error {
+        display: none;
+        margin-top: var(--space-4);
+        border: 1px solid #fecaca;
+        background: #fef2f2;
+        color: #991b1b;
+        border-radius: var(--radius);
+        padding: var(--space-3) var(--space-4);
+      }
+
+      .t7-footer {
+        background: var(--tech-footer-bg);
+        color: var(--tech-footer-text);
+        margin-top: var(--space-10);
+      }
+
+      .t7-footer__inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: var(--space-8) var(--space-4);
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      .t7-footer strong {
+        color: var(--tech-accent);
+        font-family: "Space Grotesk", Inter, sans-serif;
+      }
+
+      .t7-footer p {
+        margin: 6px 0 0;
+        color: #d1d5db;
+        line-height: 1.5;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: 100% 0; }
+        100% { background-position: 0 0; }
+      }
+
+      @media (min-width: 768px) {
+        .t7-nav { display: flex; }
+        .cart-item {
+          grid-template-columns: 80px 1fr auto;
+          align-items: center;
+        }
+        .cart-item__body {
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+        }
+        .cart-item__actions {
+          justify-content: flex-end;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .cart-page { padding-inline: var(--space-6); }
+        .cart-grid {
+          grid-template-columns: minmax(0, 65fr) minmax(320px, 35fr);
+        }
+        .summary-card {
+          position: sticky;
+          top: 24px;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="topbar">
-      <div class="container">
-        <a class="brand" href="/index.html">
-          <img src="/logo.png" alt="TECH 7" />
-          <div>
-            <div class="t">TECH 7</div>
-            <div class="s">Carrinho</div>
-          </div>
+    <header class="t7-header">
+      <div class="t7-header__inner">
+        <a class="t7-logo" href="../index.html" aria-label="TECH 7 - pagina inicial">
+          <img src="../logo.png" alt="TECH 7" width="48" height="48" />
+          <span>
+            <strong>TECH 7</strong>
+            <span>Peças para celular</span>
+          </span>
+        </a>
+        <nav class="t7-nav" aria-label="Menu principal">
+          <a href="../loja/">Loja</a>
+          <a href="../display-e-lcd/">Displays</a>
+          <a href="../baterias-celular/">Baterias</a>
+          <a href="../contato/">Contato</a>
+        </nav>
+        <a class="t7-cart-link" href="./index.html" aria-label="Carrinho">
+          <i data-lucide="shopping-cart" aria-hidden="true"></i>
+          <span class="cart-count-badge" id="headerCartCount">0</span>
         </a>
       </div>
-    </div>
+    </header>
 
-    <div class="container">
-      <div class="grid">
-        <div class="card">
-          <h2>
-            <span>Itens</span>
-            <span class="muted" id="cartIdLabel"></span>
-          </h2>
-          <div class="items" id="items"></div>
-          <div class="empty" id="empty" style="display:none">
-            Seu carrinho esta vazio.
-          </div>
+    <main class="cart-page">
+      <div class="cart-top">
+        <div class="cart-title">
+          <h1>Meu Carrinho</h1>
+          <p id="cartCountLabel">Carregando itens</p>
         </div>
+        <a class="continue-link" href="../loja/">
+          <i data-lucide="arrow-left" aria-hidden="true"></i>
+          Continuar Comprando
+        </a>
+      </div>
 
-        <div class="card">
-          <h2>Resumo</h2>
-          <div class="summary">
-            <div class="line"><span class="muted">Subtotal</span><span id="subtotal">R$ 0,00</span></div>
-            <div class="line"><span class="muted">Frete</span><span class="muted">Calculado no checkout</span></div>
-            <div class="line total"><span>Total</span><span id="total">R$ 0,00</span></div>
-            <button class="btn" id="checkoutBtn" disabled>Finalizar compra</button>
-            <button class="btn secondary" id="addDemoBtn">Adicionar item demo</button>
-            <div class="note">
-              O pagamento abre no Mercado Pago. O status do pedido e confirmado por webhook no servidor.
+      <div class="cart-grid">
+        <section class="cart-panel" aria-labelledby="cart-heading">
+          <div class="cart-panel__head">
+            <h2 id="cart-heading">Itens do carrinho</h2>
+            <span class="cart-id" id="cartIdLabel"></span>
+          </div>
+
+          <div class="skeleton" id="cartSkeleton" aria-hidden="true">
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+          </div>
+
+          <div class="cart-items" id="items"></div>
+
+          <div class="empty-state" id="empty" style="display:none">
+            <i data-lucide="shopping-cart" aria-hidden="true"></i>
+            <h2>Seu carrinho está vazio</h2>
+            <p>Adicione produtos para continuar.</p>
+            <a class="empty-btn" href="../loja/">Explorar produtos</a>
+          </div>
+        </section>
+
+        <aside class="summary-card" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">Resumo do Pedido</h2>
+          <div class="summary-list">
+            <div class="summary-line">
+              <span>Subtotal</span>
+              <strong id="subtotal">R$ 0,00</strong>
+            </div>
+            <div class="summary-line delivery-line">
+              <span>Entrega</span>
+              <strong>Entrega via Uber — valor a combinar</strong>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-line summary-total">
+              <span>Total</span>
+              <strong id="total">R$ 0,00</strong>
+            </div>
+            <p class="secure-note">
+              <i data-lucide="lock" aria-hidden="true"></i>
+              Compra 100% segura
+            </p>
+            <button class="checkout-btn" id="checkoutBtn" type="button" disabled>
+              Finalizar Pedido
+              <i data-lucide="arrow-right" aria-hidden="true"></i>
+            </button>
+            <button class="demo-btn" id="addDemoBtn" type="button">
+              Adicionar item demo
+            </button>
+            <div class="payment-badges" aria-label="Pagamentos aceitos">
+              <span>PIX</span>
+              <span>Retirada na loja</span>
             </div>
           </div>
+          <div class="cart-error" id="cartError" role="alert"></div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="t7-footer">
+      <div class="t7-footer__inner">
+        <div>
+          <strong>TECH 7</strong>
+          <p>Peças para celular em Belo Horizonte. Atendimento direto, produtos testados e entrega combinada via Uber.</p>
         </div>
       </div>
-    </div>
+    </footer>
 
     <script type="module" src="./cart.js"></script>
   </body>
-  </html>
-
+</html>
