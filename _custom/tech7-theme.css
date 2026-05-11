@@ -112,6 +112,57 @@ html, body {
   color: #ffffff !important;
 }
 
+/* Submenu desktop/mobile: inicia fechado e abre apenas em hover/focus */
+.header .nav .sub-line-category {
+  display: none !important;
+}
+.header .nav li:hover > .sub-line-category,
+.header .nav li:focus-within > .sub-line-category {
+  display: flex !important;
+}
+
+/* Remove popup de newsletter/cupom em todo o site */
+.modal-theme.email-modal {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Garante ícones das categorias visíveis no menu */
+.header .nav .list > li > a img,
+.header .nav .list > li > a .icon {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Contenção global de overflow horizontal (carrosséis/sliders) */
+html,
+body {
+  overflow-x: hidden !important;
+}
+
+.swiper-container,
+.swiper,
+.swiper-wrapper,
+.t7-carousel-wrap,
+.t7-product-carousel-section,
+.brands,
+.section-showcase,
+.showcase {
+  overflow-x: hidden !important;
+}
+
+/* Evita overflow causado pelo plugin de zoom da imagem do produto */
+img.zoomImg,
+.zoomContainer,
+.zoomWindowContainer,
+.zoomWindow,
+.zoomLens {
+  display: none !important;
+}
+
 /* Sub-menus dropdown: fundo branco com texto escuro */
 .sub-line-category,
 .sub-line-category .header-sub,

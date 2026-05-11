@@ -1,4 +1,21 @@
 (function() {
+  // Remove popup de newsletter/cupom em todas as páginas
+  function removeAvisoModal() {
+    var modal = document.querySelector('.modal-theme.email-modal');
+    if (modal && modal.parentNode) {
+      modal.parentNode.removeChild(modal);
+    }
+    document.body.classList.remove('modal-open');
+    document.documentElement.classList.remove('modal-open');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', removeAvisoModal, { once: true });
+  } else {
+    removeAvisoModal();
+  }
+  window.addEventListener('load', removeAvisoModal, { once: true });
+
   var path = window.location.pathname;
   var parts = path.replace(/\/+$/, '').split('/').filter(Boolean);
 
